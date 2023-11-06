@@ -1,2 +1,1 @@
-# Colonization
- All your base are belong to us
+![](https://github.com/lhakasi/Colonization/blob/main/Starcraft.jpg)
