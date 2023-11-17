@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Scanner))]
@@ -138,7 +139,15 @@ public class CollectorsBase : MonoBehaviour
         while (CollectedCrystals < _price)
             yield return null;
 
-        _workQueue.Enqueue(_founderOfNewCollectorsBase.CollectorsBase.gameObject);
+        if (_workQueue.Count > 0)
+        {
+            _workQueue = new Queue<GameObject>(new[] 
+            { _founderOfNewCollectorsBase.CollectorsBase.gameObject }.Concat(_workQueue));
+        }
+        else
+        {
+            _workQueue.Enqueue(_founderOfNewCollectorsBase.CollectorsBase.gameObject);
+        }
 
         StartCoroutine(PlaneWork());
     }
