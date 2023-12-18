@@ -5,16 +5,18 @@ public class Collector : MonoBehaviour
 {
     [SerializeField] private float _price;
 
-    private CollectorBrainController _colllectorBrainController;
+    private CollectorBrainController _collectorBrainController;
 
     public float Price => _price;
     public bool IsWorking => 
-        _colllectorBrainController.IsWorking;
-    public bool IsCrystalOnBoard => 
-        _colllectorBrainController.IsCrystalOnBoard;
+        _collectorBrainController.IsWorking;
+    public bool IsBuilding => 
+        _collectorBrainController.IsBuilding;
+    public bool IsCrystalOnBoard =>
+        _collectorBrainController.IsCrystalOnBoard;
 
     private void Awake()
     {
-        _colllectorBrainController = GetComponent<CollectorBrainController>();
+        _collectorBrainController = GetComponent<CollectorBrainController>();
     }
 }

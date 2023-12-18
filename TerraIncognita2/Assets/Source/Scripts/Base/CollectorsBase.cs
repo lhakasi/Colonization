@@ -7,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(CollectorsSpawner))]
 public class CollectorsBase : MonoBehaviour
 {
+    private const string FutureBuildings = nameof(FutureBuildings); 
+    
     [SerializeField] private float _price;
     [SerializeField] private AudioSource _insufficientFundsSound;
     [SerializeField] private List<Collector> _collectors;
@@ -22,6 +24,8 @@ public class CollectorsBase : MonoBehaviour
     private Queue<GameObject> _workQueue;
     private Queue<Collector> _workersQueue;
 
+    private bool _isNewBaseBuilding;
+
     public int CollectedCrystals { get; private set; }
     public int CollectorsCount => _collectors.Count;
 
@@ -34,6 +38,8 @@ public class CollectorsBase : MonoBehaviour
         _foundCrystals = new List<Collider>();
         _workQueue = new Queue<GameObject>();
         _workersQueue = new Queue<Collector>();
+
+        _isNewBaseBuilding = false;
 
         CollectedCrystals = 0;
     }
@@ -65,11 +71,31 @@ public class CollectorsBase : MonoBehaviour
             _insufficientFundsSound.Play();
     }
 
-    public void StartEstablishNewCollectorsBaseCoroutine() =>
-        StartCoroutine(EstablishNewCollectorsBase());
+    public void StartEstablishNewCollectorsBaseCoroutine() =>    
+        StartCoroutine(EstablishNewCollectorsBase());       
 
     public void AppropriateCollector(Collector collector) =>
         _collectors.Add(collector);
+
+    public void GiveAwayCollector(Collector collector) =>
+        _collectors.Remove(collector);
+
+    private void CancelBuilding()
+    {
+        GameObject[] objects = GameObject.FindGameObjectsWithTag(FutureBuildings);
+
+        foreach (GameObject gameObject in objects)        
+            Destroy(gameObject);
+        
+        foreach (Collector collector in _collectors)
+        {
+            if(collector.IsBuilding)
+            {
+                collector.GetComponent<CollectorBrainController>().SetBuilderMode(false);
+                collector.GetComponent<CollectorBrainController>().SetWorkingStatus(false);
+            }
+        }
+    }
 
     private void FillCrystalQueue()
     {
@@ -131,7 +157,12 @@ public class CollectorsBase : MonoBehaviour
 
     private IEnumerator EstablishNewCollectorsBase()
     {
+        if (_isNewBaseBuilding)
+            CancelBuilding();
+
         _founderOfNewCollectorsBase.EstablishNewCollectorsBase();
+        
+        _isNewBaseBuilding = true;
 
         while (!_founderOfNewCollectorsBase.IsPlaceChosen())
             yield return null;
@@ -141,7 +172,7 @@ public class CollectorsBase : MonoBehaviour
 
         if (_workQueue.Count > 0)
         {
-            _workQueue = new Queue<GameObject>(new[] 
+            _workQueue = new Queue<GameObject>(new[]
             { _founderOfNewCollectorsBase.CollectorsBase.gameObject }.Concat(_workQueue));
         }
         else
@@ -152,7 +183,7 @@ public class CollectorsBase : MonoBehaviour
         StartCoroutine(PlaneWork());
     }
 
-    private void SetUpWork(Vector3 target, bool isGiveAwayWorker)
+    private void SetUpWork(Vector3 target, bool isBuilding)
     {
         _workersQueue.Peek().GetComponent<TargetReceiver>().
                     SetTarget(target);
@@ -160,8 +191,11 @@ public class CollectorsBase : MonoBehaviour
         _workersQueue.Peek().GetComponent<CollectorBrainController>().
             SetWorkingStatus(true);
 
-        if (isGiveAwayWorker)
-            _collectors.Remove(_workersQueue.Peek());
+        if (isBuilding)
+        {
+            _workersQueue.Peek().GetComponent<CollectorBrainController>().
+                SetBuilderMode(true);
+        }        
 
         _workersQueue.Dequeue();
     }

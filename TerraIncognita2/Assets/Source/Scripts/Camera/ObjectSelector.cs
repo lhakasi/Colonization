@@ -33,12 +33,12 @@ public class ObjectSelector : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                CollectorsBase collectorsBase = hit.collider.GetComponent<CollectorsBase>();
-
-                if (collectorsBase != _selectedBase)
+                if (hit.collider.TryGetComponent(out CollectorsBase collectorsBase))
                 {
-                    SelectBase(collectorsBase);
+                    if (collectorsBase != _selectedBase)
+                        SelectBase(collectorsBase);
                 }
+
             }
         }
     }

@@ -12,46 +12,42 @@ public class UIRenderer : MonoBehaviour
 
     private float _elapsedTime;
 
-    private bool _isBaseSelected;
     private bool _isWorking;
 
     private void Awake()
     {
-        _elapsedTime = 0.0f;
+        _elapsedTime = 0f;
         _isWorking = true;
 
         StartCoroutine(RuntimeTimerCoroutine());
     }
 
     void Update()
-    {        
-        if (_isBaseSelected)
-        {
-            _collectorsCounter.text = _collectorsBase.CollectorsCount.ToString();
-            _crystalsCounter.text = _collectorsBase.CollectedCrystals.ToString();
-        }        
+    {
+        _collectorsCounter.text = _collectorsBase.CollectorsCount.ToString();
+        _crystalsCounter.text = _collectorsBase.CollectedCrystals.ToString();
     }
 
     public void SetSelectedBase(CollectorsBase collectorsBase)
     {
         _collectorsBase = collectorsBase;
-
-        _isBaseSelected = true;
     }
 
     private IEnumerator RuntimeTimerCoroutine()
     {
-        WaitForSeconds oneSecond = new WaitForSeconds(1f);
+        float second = 1f;
+        WaitForSeconds oneSecond = new WaitForSeconds(second);
+
         while (_isWorking)
         {
-            _elapsedTime += Time.deltaTime;
+            _elapsedTime += second;
 
             string timeString = string.Format("{0:00}:{1:00}",
                 Mathf.Floor(_elapsedTime / 60), Mathf.Floor(_elapsedTime % 60));
 
             _timer.text = timeString;
 
-            yield return oneSecond; 
+            yield return oneSecond;
         }
     }
 }

@@ -24,6 +24,7 @@ public class CollectorBrainController : MonoBehaviour
     private bool _isReached;
 
     public bool IsWorking { get; private set; }
+    public bool IsBuilding { get; private set; }
     public bool IsCrystalOnBoard { get; private set; }
 
     private void Awake()
@@ -35,6 +36,7 @@ public class CollectorBrainController : MonoBehaviour
 
         IsCrystalOnBoard = false;
         IsWorking = false;
+        IsBuilding = false;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -98,6 +100,9 @@ public class CollectorBrainController : MonoBehaviour
     public void SetWorkingStatus(bool status) =>
         IsWorking = status;
 
+    public void SetBuilderMode(bool isTurnOn) =>
+        IsBuilding = isTurnOn;
+
     public int GiveCrystals()
     {
         Crystal crystal = GetComponentInChildren<Crystal>();
@@ -127,6 +132,9 @@ public class CollectorBrainController : MonoBehaviour
     private void BuildNewBase()
     {
         SetWorkingStatus(false);
+        SetBuilderMode(false);
+
+        _motherBase.GiveAwayCollector(_collector);
 
         _newBase = Instantiate(_newBaseBlueprint, transform.position, Quaternion.identity);
         _newBase.AppropriateCollector(_collector);

@@ -4851,7 +4851,7 @@ PrefabInstance:
       objectReference: {fileID: 963194227}
     - target: {fileID: -2942033703086067401, guid: e39e473fb2690d1429ec56f62b6d6e3e, type: 3}
       propertyPath: _price
-      value: 0
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: -2942033703086067401, guid: e39e473fb2690d1429ec56f62b6d6e3e, type: 3}
       propertyPath: _collectors.Array.size

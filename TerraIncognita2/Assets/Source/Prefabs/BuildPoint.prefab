@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3788059706733701728}
   - component: {fileID: 3269387239276670190}
   - component: {fileID: 3706186477413056465}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BuildPoint
-  m_TagString: Untagged
+  m_TagString: FutureBuildings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
