@@ -24,7 +24,7 @@ public class Scanner : MonoBehaviour
         List<Collider> foundCrystals = new List<Collider>();
 
         foundCrystals.AddRange(Physics.OverlapSphere
-            (transform.position, _scanningRadius, _crystalLayer).ToList());        
+            (transform.position, _scanningRadius, _crystalLayer).ToList());
 
         if (foundCrystals.Count > 0)
         {

@@ -19,5 +19,5 @@ public class CollectorsSpawner : MonoBehaviour
         return collector;
     }
 
-    public float GetCollectorPrice() => _collectorBlueprint.Price;    
+    public int GetCollectorPrice() => _collectorBlueprint.Price;    
 }

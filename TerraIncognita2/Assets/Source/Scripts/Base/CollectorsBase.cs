@@ -9,7 +9,7 @@ public class CollectorsBase : MonoBehaviour
 {
     private const string FutureBuildings = nameof(FutureBuildings); 
     
-    [SerializeField] private float _price;
+    [SerializeField] private int _price;
     [SerializeField] private AudioSource _insufficientFundsSound;
     [SerializeField] private List<Collector> _collectors;
 
@@ -66,9 +66,15 @@ public class CollectorsBase : MonoBehaviour
     public void CreateNewCollector()
     {
         if (CollectedCrystals >= _collectorsSpawner.GetCollectorPrice())
+        {
             _collectors.Add(_collectorsSpawner.CreateNewCollector());
+
+            CollectedCrystals -= _collectorsSpawner.GetCollectorPrice();
+        }
         else
+        {
             _insufficientFundsSound.Play();
+        }
     }
 
     public void StartEstablishNewCollectorsBaseCoroutine() =>    
@@ -169,6 +175,8 @@ public class CollectorsBase : MonoBehaviour
 
         while (CollectedCrystals < _price)
             yield return null;
+
+        CollectedCrystals -= _price;
 
         if (_workQueue.Count > 0)
         {

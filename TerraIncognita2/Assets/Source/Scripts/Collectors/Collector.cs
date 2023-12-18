@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent (typeof(CollectorBrainController))]
 public class Collector : MonoBehaviour
 {
-    [SerializeField] private float _price;
+    [SerializeField] private int _price;
 
     private CollectorBrainController _collectorBrainController;
 
-    public float Price => _price;
+    public int Price => _price;
     public bool IsWorking => 
         _collectorBrainController.IsWorking;
     public bool IsBuilding => 
